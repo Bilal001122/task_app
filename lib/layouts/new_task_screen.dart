@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/shared/components/task_widget.dart';
 
-class NewTaskScreen extends StatelessWidget {
-  const NewTaskScreen({Key? key}) : super(key: key);
+import '../shared/constants.dart';
 
+class NewTaskScreen extends StatefulWidget {
+  NewTaskScreen();
+
+  @override
+  State<NewTaskScreen> createState() => _NewTaskScreenState();
+}
+
+class _NewTaskScreenState extends State<NewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       itemBuilder: (context, index) {
         return TaskWidget(
-          title: 'Go to the GYM',
-          time: '12:00 PM',
-          date: 'Apr 23,2021',
+          title: tasks[index]['title'],
+          time: tasks[index]['time'],
+          date: tasks[index]['date'],
         );
       },
       separatorBuilder: (context, index) {
@@ -20,7 +27,7 @@ class NewTaskScreen extends StatelessWidget {
           color: Colors.grey[200],
         );
       },
-      itemCount: 10,
+      itemCount: tasks.length,
     );
   }
 }

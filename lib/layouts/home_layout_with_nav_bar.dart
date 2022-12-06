@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/shared/components/default_form_field.dart';
+import '../shared/constants.dart';
 import 'archived_task_screen.dart';
 import 'package:intl/intl.dart';
 import 'done_task_screen.dart';
 import 'new_task_screen.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({Key? key}) : super(key: key);
@@ -20,7 +23,6 @@ class _HomeLayoutState extends State<HomeLayout> {
   GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
   late Database dataBase;
-
   TextEditingController titleController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -56,13 +58,18 @@ class _HomeLayoutState extends State<HomeLayout> {
                   title: titleController.text,
                 ).then(
                   (value) {
-                    isBottomSheetShown = false;
-                    setState(
-                      () {
-                        fabIcon = Icons.edit;
+                    getDataFromDataBase(dataBase).then(
+                      (value) {
+                        isBottomSheetShown = false;
+                        setState(
+                          () {
+                            fabIcon = Icons.edit;
+                            tasks = value;
+                          },
+                        );
+                        Navigator.pop(context);
                       },
                     );
-                    Navigator.pop(context);
                   },
                 );
               }
@@ -158,10 +165,15 @@ class _HomeLayoutState extends State<HomeLayout> {
                   )
                   .closed
                   .then((value) {
-                    isBottomSheetShown = false;
-                    setState(
-                      () {
-                        fabIcon = Icons.edit;
+                    getDataFromDataBase(dataBase).then(
+                      (value) {
+                        isBottomSheetShown = false;
+                        setState(
+                          () {
+                            fabIcon = Icons.edit;
+                            tasks = value;
+                          },
+                        );
                       },
                     );
                   });
@@ -186,7 +198,11 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
         title: Text('${appBarTitles[currentIndex]}'),
       ),
-      body: screens[currentIndex],
+      body: tasks.length == 0
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
@@ -234,6 +250,12 @@ class _HomeLayoutState extends State<HomeLayout> {
         );
       },
       onOpen: (db) {
+        getDataFromDataBase(db).then(
+          (value) {
+            tasks = value;
+            print(tasks);
+          },
+        );
         print('Database opened');
       },
     );
@@ -263,8 +285,8 @@ class _HomeLayoutState extends State<HomeLayout> {
     );
   }
 
-  void getDataFromDataBase() async {
-    List<Map> tasks = await dataBase.rawQuery(
+  Future<List<Map>> getDataFromDataBase(Database dataBase) async {
+    return await dataBase.rawQuery(
       'SELECT * FROM tasks',
     );
   }
