@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.black,
         textTheme: Typography(platform: TargetPlatform.android).black,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.deepPurple,
         ),
         colorScheme: ColorScheme.fromSwatch().copyWith(

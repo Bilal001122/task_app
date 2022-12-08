@@ -4,38 +4,53 @@ import 'package:task_app/shared/components/task_widget.dart';
 import 'package:task_app/shared/cubit/cubit.dart';
 import 'package:task_app/shared/cubit/states.dart';
 
-import '../shared/constants.dart';
+class NewTaskScreen extends StatelessWidget {
+  const NewTaskScreen();
 
-class NewTaskScreen extends StatefulWidget {
-  NewTaskScreen();
-
-  @override
-  State<NewTaskScreen> createState() => _NewTaskScreenState();
-}
-
-class _NewTaskScreenState extends State<NewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        AppCubit cubit = AppCubit.get(context);
-        return ListView.separated(
-          itemBuilder: (context, index) {
-            return TaskWidget(
-              title: cubit.tasks[index]['title'],
-              time: cubit.tasks[index]['time'],
-              date: cubit.tasks[index]['date'],
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Container(
-              height: 2,
-              color: Colors.grey[200],
-            );
-          },
-          itemCount: cubit.tasks.length,
-        );
+        List<Map> tasks = AppCubit.get(context).newTasks;
+        return tasks.isNotEmpty
+            ? ListView.separated(
+                itemBuilder: (context, index) {
+                  return TaskWidget(
+                    title: tasks[index]['title'],
+                    time: tasks[index]['time'],
+                    date: tasks[index]['date'],
+                    id: tasks[index]['id'],
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Container(
+                    height: 2,
+                    color: Colors.grey[200],
+                  );
+                },
+                itemCount: tasks.length,
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.menu,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      'No Tasks Yet, Please add some Tasks',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
       },
     );
   }
