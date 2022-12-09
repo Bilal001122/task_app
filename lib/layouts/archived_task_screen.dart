@@ -16,11 +16,15 @@ class ArchivedTasksScreen extends StatelessWidget {
         return tasks.isNotEmpty
             ? ListView.separated(
                 itemBuilder: (context, index) {
-                  return TaskWidget(
-                    title: tasks[index]['title'],
-                    time: tasks[index]['time'],
-                    date: tasks[index]['date'],
-                    id: tasks[index]['id'],
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 4),
+                    child: TaskWidget(
+                      title: tasks[index]['title'],
+                      time: tasks[index]['time'],
+                      date: tasks[index]['date'],
+                      id: tasks[index]['id'],
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) {

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:task_app/shared/bloc_observer.dart';
-
 import 'layouts/home_layout_with_nav_bar.dart';
 
 void main() {
@@ -17,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Poppins',
         primaryColor: Colors.black,
         textTheme: Typography(platform: TargetPlatform.android).black,
         floatingActionButtonTheme: const FloatingActionButtonThemeData(

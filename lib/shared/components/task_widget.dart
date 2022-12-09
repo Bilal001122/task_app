@@ -20,66 +20,70 @@ class TaskWidget extends StatelessWidget {
       onDismissed: (direction) {
         AppCubit.get(context).deleteDataFromDataBase(id: id);
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              maxRadius: 40,
-              backgroundColor: Colors.deepPurple[500],
-              child: Text(
-                '$time',
-                style: TextStyle(
-                  color: Colors.white,
+      child: Card(
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                maxRadius: 40,
+                backgroundColor: Colors.deepPurple[500],
+                child: Text(
+                  '$time',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '$title',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$title',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '$date',
-                  ),
-                ],
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      '$date',
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            IconButton(
-              onPressed: () {
-                AppCubit.get(context).updateDataBase(status: 'DONE', id: id);
-              },
-              icon: const Icon(
-                Icons.check_box,
-                color: Colors.green,
+              const SizedBox(
+                width: 20,
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                AppCubit.get(context).updateDataBase(status: 'ARCHIVE', id: id);
-              },
-              icon: const Icon(
-                Icons.archive,
-                color: Colors.black45,
+              IconButton(
+                onPressed: () {
+                  AppCubit.get(context).updateDataBase(status: 'DONE', id: id);
+                },
+                icon: const Icon(
+                  Icons.check_box,
+                  color: Colors.green,
+                ),
               ),
-            ),
-          ],
+              IconButton(
+                onPressed: () {
+                  AppCubit.get(context)
+                      .updateDataBase(status: 'ARCHIVE', id: id);
+                },
+                icon: const Icon(
+                  Icons.archive,
+                  color: Colors.black45,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
